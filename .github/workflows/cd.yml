@@ -11,14 +11,16 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4  # Also update checkout to v4
+      - uses: actions/setup-node@v4  # Update setup-node to v4
         with:
           node-version: '18'
       - run: npm ci
       - run: npm test
       - run: zip -r release.zip . -x "*.git*" "node_modules/*"
-      - uses: actions/upload-artifact@v3
+      
+      # CHANGED: v3 -> v4
+      - uses: actions/upload-artifact@v4
         with:
           name: node-app
           path: release.zip
