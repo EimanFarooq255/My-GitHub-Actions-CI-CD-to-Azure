@@ -1,0 +1,11 @@
+{
+  "name": "my-first-actions-app",
+  "version": "1.0.0",
+  "description": "Learn GitHub Actions CI/CD to Azure",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,24 @@
+name: CD - Deploy to Azure
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  AZURE_WEBAPP_NAME: my-first-app-eiman
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: npm test
+      - run: zip -r release.zip . -x "*.git*" "node_modules/*"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: node-app
+          path: release.zip
