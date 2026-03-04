@@ -4,23 +4,41 @@ on:
   issues:
     types: [opened]
 
+# ADD THIS PERMISSIONS BLOCK
+permissions:
+  issues: write
+  contents: read
+
 jobs:
   welcome:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/github-script@v6
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          
+      - name: Welcome comment
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
-            const welcomeMessage = fs.readFileSync(
-              '.github/ISSUE_RESPONSES/welcome.md', 
-              'utf8'
-            );
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: welcomeMessage
-            });
+            try {
+              const welcomeMessage = fs.readFileSync(
+                '.github/ISSUE_RESPONSES/welcome.md', 
+                'utf8'
+              );
+              
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: welcomeMessage
+              });
+              
+              console.log('✅ Comment posted successfully!');
+            } catch (error) {
+              console.log('❌ Error:', error.message);
+              core.setFailed(error.message);
+            }
