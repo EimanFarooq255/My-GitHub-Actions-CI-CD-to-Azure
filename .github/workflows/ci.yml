@@ -10,16 +10,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4  # Update to v4
-      - uses: actions/setup-node@v4  # Update to v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-      - run: npm ci
+      # CHANGE: npm ci -> npm install
+      - run: npm install
       - run: npm test
-      
-      # If you're using artifacts here too, update them
-      - uses: actions/upload-artifact@v4  # Changed to v4
+      - uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: test.js
